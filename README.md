@@ -1,12 +1,21 @@
-ids
-===
+unsub-ids
+=========
 
-Command line script for looking up various Unsub identifiers.
+Command line tools for looking up various Unsub identifiers.
 
-Why? To help quickly find what users/institutions/etc. are linked to various package/scenario ids
+Why? 
+
+- To help quickly find what users/institutions/etc. are linked to various package/scenario ids
+- To get a JWT token to e.g., pop into a curl request for debugging purposes
+
+## installation
+
+In the `unsub-ids` directory, run `pip install .`
 
 
-## Example
+## Examples
+
+### ids
 
 ```
 ids
@@ -26,7 +35,26 @@ Commands:
   s  lookup a scenario id
 ```
 
+### token
 
-## installation
+```
+tokens
+```
 
-In `ids` directory, run `pip install .`
+```
+Usage: tokens [OPTIONS] COMMAND [ARGS]...
+
+  Get Unsub JWT Tokens
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  e  get a JWT token by email address
+```
+
+To do a curl request with this:
+
+```
+curl https://unpaywall-jump-api.herokuapp.com/<some-route>?jwt=$(tokens e hello@world.org)
+```
