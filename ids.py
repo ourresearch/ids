@@ -1,4 +1,5 @@
 import click
+import json
 from unsub_database import make_cursor
 import pandas as pd
 
@@ -27,6 +28,14 @@ def walk_up(scenario_id=None, package_id=None, institution_id=None):
             raise Exception(f"more than one result found for scenario_id {scenario_id}")
         package_id = get1(out.get('package_id'))
         scenario_name = get1(out.get('scenario_name'))
+        if not scenario_name:
+            cursor.execute(f"select * from jump_scenario_details_paid where scenario_id = '{scenario_id}' order by updated desc limit 1")
+            out_name: pd.DataFrame = cursor.fetch_dataframe()
+            if not out_name.empty:
+                try:
+                    scenario_name = json.loads(out_name.scenario_json[0])['name']
+                except:
+                    pass
 
     if package_id:
         cursor.execute(f"select * from jump_account_package where package_id = '{package_id}'")
